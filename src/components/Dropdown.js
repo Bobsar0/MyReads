@@ -5,16 +5,17 @@ import { toCamelCase } from "../utils/helpers";
 // Controlled Dropdown Component which allows us to update the value attribute on the select tag in one place
 class Dropdown extends React.Component {
     state = {
-        selectedVal: this.props.defaultShelf
+        selectedShelf: this.props.defaultShelf
     }
 
     handleChange = (event) => {
-        this.setState({value: event.target.value});
+        this.setState({selectedShelf: event.target.value});
+        this.props.onUpdateShelf(event.target.value)
     }
 
     render() {
         return (
-            <select value={this.state.selectedVal} onChange={this.handleChange}>
+            <select value={this.state.selectedShelf} onChange={this.handleChange}>
                 <option value="move" disabled>Move to...</option>
                 {shelves.map(shelf => 
                     <option value={toCamelCase(shelf)}>{shelf}</option>

@@ -4,14 +4,13 @@ import { Link } from 'react-router-dom'
 
 class HomePage extends React.Component {
     render() {
-        const {books} = this.props;
         return (
             <div className="list-books">
                 <div className="list-books-title">
                     <h1>MyReads</h1>
                 </div>
-                <Dashboard books={books} />
-                <Link to="/search" className="open-search">Search</Link>
+                <Dashboard />
+                <Link to="/search" className="open-search">Add a book</Link>
             </div>
         )
     }

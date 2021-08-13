@@ -1,5 +1,4 @@
 import React from 'react'
-import * as BooksAPI from './utils/BooksAPI'
 import './App.css'
 import './components/Book'
 import { Route } from 'react-router-dom'
@@ -7,44 +6,14 @@ import SearchPage from './pages/SearchPage'
 import HomePage from './pages/HomePage'
 
 class BooksApp extends React.Component {
-  state = {
-    books: []
-  }
-
-  componentDidMount() {
-    // Retrieve books from server immediately after this component is mounted.
-    BooksAPI.getAll()
-      .then((books) => {
-        console.log(books)
-        this.setState(() => ({
-          books
-        }))
-      })
-  }
-
-  updateBook(book, shelf) {    
-    BooksAPI.update(book, shelf)
-      .then(() => {
-        this.setState((currState) => ({
-          books: currState.books.map(b => 
-            b.id === book.id
-            ? {...b, shelf: shelf}
-            : b
-            )
-        }))
-        alert(`Book updated successfuly to ${shelf}`)
-      })
-  }
 
   render() {
     return (
       <div className="app">
-        <Route exact path='/' render={() => 
-          <HomePage books={this.state.books}/>
-        }
+        <Route exact path='/' component={HomePage}
         />
         <Route path='/search' render={({ history }) => 
-          <SearchPage books={this.state.books} onUpdateBook={this.updateBook}/>  
+          <SearchPage />  
         } 
         />
       </div>
