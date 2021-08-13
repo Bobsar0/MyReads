@@ -12,7 +12,7 @@ class BookList extends React.Component {
         return (
             <ol className="books-grid">
                 {books.map(book => (
-                    <li id={book.id}>
+                    <li key={book.id}>
                         <Book book={book} />
                     </li>
                 ))}

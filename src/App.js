@@ -1,8 +1,19 @@
 import React from 'react'
-import * as BooksAPI from './BooksAPI'
+import * as BooksAPI from './utils/BooksAPI'
 import './App.css'
 import './components/Book'
 import BookList from './components/BookList'
+import Shelf from './components/Shelf'
+
+const shelves = ['Currently Reading', 'Want to Read', 'Read']
+
+function toCamelCase(text) {
+  const textArr = text.split(' ');
+  const firstWord = textArr[0].toLowerCase();
+  const restWord = textArr.slice(1).map((str) => (str.charAt(0).toUpperCase() + str.slice(1)))
+                         .join('')
+  return firstWord+restWord
+}
 
 class BooksApp extends React.Component {
   state = {
@@ -27,8 +38,13 @@ class BooksApp extends React.Component {
       })
   }
 
+  getShelfBooks = (shelf) => {
+    return (
+          this.state.books.filter(book => (book.shelf === toCamelCase(shelf)))
+    )
+  }
+
   render() {
-    console.log('1st book',this.state.books)
 
     return (
       <div className="app">
@@ -60,24 +76,9 @@ class BooksApp extends React.Component {
             </div>
             <div className="list-books-content">
               <div>
-                <div className="bookshelf">
-                  <h2 className="bookshelf-title">Currently Reading</h2>
-                  <div className="bookshelf-books">
-                    <BookList books={this.state.books} />
-                  </div>
-                </div>
-                <div className="bookshelf">
-                  <h2 className="bookshelf-title">Want to Read</h2>
-                  <div className="bookshelf-books">
-                    <BookList books={this.state.books} />
-                  </div>
-                </div>
-                <div className="bookshelf">
-                  <h2 className="bookshelf-title">Read</h2>
-                  <div className="bookshelf-books">
-                    <BookList books={this.state.books} />
-                  </div>
-                </div>
+                {shelves.map(shelf => (
+                  <Shelf title={shelf} books={this.getShelfBooks(shelf)}/>
+                ))}
               </div>
             </div>
             <div className="open-search">
