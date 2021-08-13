@@ -2,7 +2,6 @@ import React from 'react'
 import BookList from './BookList';
 
 class Shelf extends React.Component {
-    
     render() {
         const {title, books} = this.props;
 

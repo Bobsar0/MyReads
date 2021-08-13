@@ -2,18 +2,8 @@ import React from 'react'
 import * as BooksAPI from './utils/BooksAPI'
 import './App.css'
 import './components/Book'
-import BookList from './components/BookList'
-import Shelf from './components/Shelf'
+import Dashboard from './components/Dashboard'
 
-const shelves = ['Currently Reading', 'Want to Read', 'Read']
-
-function toCamelCase(text) {
-  const textArr = text.split(' ');
-  const firstWord = textArr[0].toLowerCase();
-  const restWord = textArr.slice(1).map((str) => (str.charAt(0).toUpperCase() + str.slice(1)))
-                         .join('')
-  return firstWord+restWord
-}
 
 class BooksApp extends React.Component {
   state = {
@@ -38,11 +28,7 @@ class BooksApp extends React.Component {
       })
   }
 
-  getShelfBooks = (shelf) => {
-    return (
-          this.state.books.filter(book => (book.shelf === toCamelCase(shelf)))
-    )
-  }
+
 
   render() {
 
@@ -74,13 +60,7 @@ class BooksApp extends React.Component {
             <div className="list-books-title">
               <h1>MyReads</h1>
             </div>
-            <div className="list-books-content">
-              <div>
-                {shelves.map(shelf => (
-                  <Shelf title={shelf} books={this.getShelfBooks(shelf)}/>
-                ))}
-              </div>
-            </div>
+            <Dashboard books={this.state.books} />
             <div className="open-search">
               <button onClick={() => this.setState({ showSearchPage: true })}>Add a book</button>
             </div>
