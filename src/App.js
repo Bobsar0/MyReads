@@ -1,23 +1,62 @@
-import React from 'react'
-import './App.css'
-import './components/Book'
-import { Route } from 'react-router-dom'
-import SearchPage from './pages/SearchPage'
-import HomePage from './pages/HomePage'
+import React from "react";
+import "./App.css";
+import "./components/Book";
+import { Route } from "react-router-dom";
+import SearchPage from "./pages/SearchPage";
+import HomePage from "./pages/HomePage";
+import * as BooksAPI from "./utils/BooksAPI";
+import { shelvesMap } from "./utils/globals";
 
 class BooksApp extends React.Component {
+  state = {
+    booksInShelves: [],
+  };
+
+  componentDidMount() {
+    // Retrieve books from server immediately after this component is mounted.
+    this.fetchBooksInShelves();
+  }
+
+  updateBookShelf = (book, shelf) => {
+    BooksAPI.update(book, shelf).then((_) => {
+      this.fetchBooksInShelves();
+      alert(`"${book.title}" successfully moved to "${shelvesMap[shelf]}"`);
+    });
+  };
+
+  fetchBooksInShelves = () => {
+    BooksAPI.getAll().then((books) => {
+      console.log(books);
+      this.setState({
+        booksInShelves: books,
+      });
+    });
+  };
 
   render() {
     return (
       <div className="app">
-        <Route exact path='/' component={HomePage}
+        <Route
+          exact
+          path="/"
+          render={() => (
+            <HomePage
+              books={this.state.booksInShelves}
+              onUpdateShelf={this.updateBookShelf}
+            />
+          )}
         />
-        <Route path='/search' render={({ history }) => 
-          <SearchPage />  
-        } 
+        <Route
+          path="/search"
+          render={({ history }) => (
+            <SearchPage
+              booksInShelves={this.state.booksInShelves}
+              onUpdateShelf={this.updateBookShelf}
+            />
+          )}
         />
       </div>
-    )
+    );
 
     // return (
     //   <div className="app">
@@ -209,4 +248,4 @@ class BooksApp extends React.Component {
   }
 }
 
-export default BooksApp
+export default BooksApp;
