@@ -42,7 +42,7 @@ When you navigate back to the main page from the search page, you should instant
 
 ## Important
 
-The backend API uses a fixed set of cached search results and is limited to a particular set of search terms, which can be found in [SEARCH_TERMS.md](./SEARCH_TERMS.md). That list of terms are the _only_ terms that will work with the backend, so don't be surprised if your searches for Basket Weaving or Bubble Wrap don't come back with any results.
+The backend API uses a fixed set of cached search results and is limited to a particular set of search terms, which can be found in [SEARCH_TERMS.md](./SEARCH_TERMS.md). That list of terms are the _only_ terms that will work with the backend, so don't worry if you don't find a specific author or title.
 
 ## Create React App
 

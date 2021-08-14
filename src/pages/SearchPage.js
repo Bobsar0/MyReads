@@ -2,8 +2,19 @@ import React from "react";
 import { Link } from "react-router-dom";
 import BookList from "../components/BookList";
 import * as BooksAPI from "../utils/BooksAPI";
+import PropTypes from "prop-types";
 
+/**
+ * Class component which represents the SearchPage where books can be added to shelves in the library
+ */
 class SearchPage extends React.Component {
+  static propTypes = {
+    booksInShelves: PropTypes.array.isRequired,
+    onUpdateShelf: PropTypes.func.isRequired,
+  };
+  // Initialize state values
+  // searchText is used to control the value of the input search element
+  // showing books represent the books that will be displayed upon search. When searchText is empty, no book is displayed
   state = {
     searchText: "",
     showingBooks: [],
@@ -22,17 +33,15 @@ class SearchPage extends React.Component {
   };
 
   onUpdateBookShelf = (book, shelf) => {
-    // remove book that shelf has just been changed
-    // this.updateShowingBooks(
-    //   this.state.showingBooks.filter((bk) => bk.id !== book.id)
-    // );
+    // Update the shelf of the book in showingBooks for this page
     this.updateShowingBooks(this.state.showingBooks);
+    //  Update the shelf of the book at the Home Page using the function prop defined at the App top-level parent component
     this.props.onUpdateShelf(book, shelf);
   };
 
   getBooksToDisplay = (books) => {
     return books.map((book) => {
-      // Get book in shelf if present
+      // Return book in shelf instead if present
       const shelfBook = this.props.booksInShelves.filter(
         (bk) => bk.id === book.id
       );
@@ -41,16 +50,9 @@ class SearchPage extends React.Component {
   };
 
   componentDidUpdate(_, prevState) {
-    console.log(
-      "in componentdidUpdate - booksInShelves: ",
-      this.props.booksInShelves
-    );
-    console.log("prev searchText: ", prevState.searchText);
-    console.log("updated searchText: ", this.state.searchText);
-    console.log(prevState.searchText === this.state.searchText);
+    // After component is re-rendered (due to a change in searchText), search for books using the search API
+    // Update showingBooks with books found or empty list if an error is returned or if searchText is empty
     if (prevState.searchText !== this.state.searchText) {
-      //filter out ids that are in shelves and update their shelves before rendering
-      console.log("searchtext not same!!!!: ", this.state.searchText);
       this.state.searchText !== ""
         ? BooksAPI.search(this.state.searchText)
             .then((books) => {
@@ -76,19 +78,12 @@ class SearchPage extends React.Component {
             Close
           </Link>
           <div className="search-books-input-wrapper">
-            {/*
-                NOTES: The search from BooksAPI is limited to a particular set of search terms.
-                You can find these search terms here:
-                https://github.com/udacity/reactnd-project-myreads-starter/blob/master/SEARCH_TERMS.md
-
-                However, remember that the BooksAPI.search method DOES search by title or author. So, don't worry if
-                you don't find a specific author or title. Every search is limited by search terms.
-              */}
             <input
               type="text"
               placeholder="Search by title or author"
               value={searchText}
               onChange={(event) => this.updateSearchText(event.target.value)}
+              autoFocus="true"
             />
           </div>
         </div>
@@ -102,4 +97,5 @@ class SearchPage extends React.Component {
     );
   }
 }
+
 export default SearchPage;
