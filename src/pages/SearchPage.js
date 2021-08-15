@@ -83,7 +83,7 @@ class SearchPage extends React.Component {
               placeholder="Search by title or author"
               value={searchText}
               onChange={(event) => this.updateSearchText(event.target.value)}
-              autoFocus="true"
+              autoFocus={true}
             />
           </div>
         </div>
